@@ -29,12 +29,15 @@ public:
     void setChannel(AnalogChannels channel,char value);
     void setChannel(AnalogChannels channel,int value);
     void setChannel(Buttons b,bool value);
-
+    void startSending();
+    void stopSending();
+    void sendPacket();
     unsigned char* getAnalogChannels();
     bool* getButtons();
     const int numChannels = NUM_CHANNELS;
 private:
-    unsigned char analogChannels[4]; //Wat
+    
+    unsigned char analogChannels[4];
     bool buttons[16];
 };
 

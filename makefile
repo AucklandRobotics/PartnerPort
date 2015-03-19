@@ -1,2 +1,2 @@
 all:
-	g++ serial.cpp PartnerPort.cpp VexJoystick.cpp -o serial
+	g++ -std=c++11 serial.cpp PartnerPort.cpp VexJoystick.cpp -o serial

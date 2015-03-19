@@ -9,9 +9,11 @@
 #include "PartnerPort.h"
 #include <string>
 
-PartnerPort::PartnerPort(){
+PartnerPort::PartnerPort(VexJoystick* j,char* port){
     struct termios options;
     
+    this->joy = j;
+    this->portName = port;
     this->fd = open(this->portName, O_RDWR | O_NOCTTY | O_NDELAY);
     
     if (this->fd == -1) {
@@ -64,10 +66,6 @@ PartnerPort::PartnerPort(){
         printf ( "%s\n", "tcsetattr succeed" );
 }
 
-PartnerPort::PartnerPort(const char* name){
-    this->portName = name;
-    PartnerPort();
-}
 
 bool PartnerPort::readToBuffer(){
     int bytes = 0;
@@ -130,3 +128,20 @@ void PartnerPort::writeJoystick(VexJoystick* joy){
     write(this->fd,this->writeBuffer,sizeof(this->writeBuffer));
     
 }
+
+void PartnerPort::sendPacket(){
+    while(true){
+        this->writeJoystick(this->joy);
+        usleep(22220);
+    }
+}
+
+void PartnerPort::startSending(){
+    this->commThread = new std::thread(&PartnerPort::sendPacket,this);
+    this->commThread->detach();
+}
+
+void PartnerPort::stopSending(){
+    this->commThread->join();
+}
+

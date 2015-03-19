@@ -13,7 +13,7 @@ VexJoystick::VexJoystick(){
         this->buttons[i] = false;
     }
     for (int i=0;i<NUM_ANALOG_CHANNELS;i++){
-        this->analogChannels[i] = 127;
+        this->analogChannels[i] = 127; //127 is 0, maybe change this to be -128 to 127 like in robotC?
     }
 }
 
