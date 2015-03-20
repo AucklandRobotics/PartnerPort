@@ -43,7 +43,7 @@ private:
     char *portName = "/dev/cu.wchusbserial1420";
     const int headerBytes[HEADER_LENGTH] = {170,85,57};
     const int dataLength = 10;
-    char checksum = 0x00;
+    const char checksum = 0x50;
     
 };
 

@@ -117,14 +117,6 @@ void PartnerPort::writeJoystick(VexJoystick* joy){
         this->writeBuffer[j] = buttonByte;
     }
     
-
-    //Calculate Checksum - untested
-    for (int i = HEADER_LENGTH+1; i < PACKET_LENGTH-1; i++){
-        //sum all data bytes in arrat from 4 to 12 (exclude header, size, and checksum itself)
-        checksum += this->writeBuffer[i];
-    }
-    checksum = 0x00-checksum; //sum of data bytes + checksum = 0x00
-    
     //Write Checksum
     this->writeBuffer[PACKET_LENGTH-1] = checksum;
     //Print for debugging
@@ -133,14 +125,21 @@ void PartnerPort::writeJoystick(VexJoystick* joy){
         printf("%02x ",this->writeBuffer[i]);
     }
     printf("\n");
-    write(this->fd,this->writeBuffer,sizeof(this->writeBuffer));
-    
+    int counter = 0;
+    auto bufferPtr = this->writeBuffer;
+    while (counter < 12){
+        write(this->fd,bufferPtr,4);
+        counter += 4;
+        bufferPtr += 4;
+        usleep(600);
+    }
+    write(this->fd,bufferPtr,2);
 }
 
 void PartnerPort::sendPacket(){
     while(true){
         this->writeJoystick(this->joy);
-        usleep(22220);
+        usleep(17000);
     }
 }
 
