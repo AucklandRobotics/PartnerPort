@@ -125,14 +125,21 @@ void PartnerPort::writeJoystick(VexJoystick* joy){
         printf("%02x ",this->writeBuffer[i]);
     }
     printf("\n");
-    write(this->fd,this->writeBuffer,sizeof(this->writeBuffer));
-    
+    int counter = 0;
+    auto bufferPtr = this->writeBuffer;
+    while (counter < 12){
+        write(this->fd,bufferPtr,4);
+        counter += 4;
+        bufferPtr += 4;
+        usleep(600);
+    }
+    write(this->fd,bufferPtr,2);
 }
 
 void PartnerPort::sendPacket(){
     while(true){
         this->writeJoystick(this->joy);
-        usleep(22220);
+        usleep(17000);
     }
 }
 

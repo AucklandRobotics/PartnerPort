@@ -15,7 +15,7 @@ int main()
     joy.setChannel(CH_7U,true);
     joy.setChannel(CH_7D,false);
     
-    char* name = "/dev/null";
+    char* name = "/dev/cu.wchusbserial1420";
     
     PartnerPort port(&joy,name);
     port.startSending();
