@@ -117,7 +117,11 @@ void PartnerPort::writeJoystick(VexJoystick* joy){
         this->writeBuffer[j] = buttonByte;
     }
 
-     //Calculate Checksum - untested
+    //Calculate Checksum
+    
+    //Zero checksum
+    checksum = 0x00;
+    
     for (int i = HEADER_LENGTH+1; i < PACKET_LENGTH-1; i++){
         //sum all data bytes in arrat from 4 to 12 (exclude header, size, and checksum itself)
         checksum += this->writeBuffer[i];
